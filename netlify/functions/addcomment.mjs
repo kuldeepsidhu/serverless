@@ -2,10 +2,10 @@ export default async (req, context) => {
   try {
     // Fetch data from the API
     const data = {};
-    data.request.url = req.url;
-    data.request.method = req.method;
-    data.request.body = req.body;
-    data.request.bodyUsed = req.bodyUsed;
+    data.url = req.url;
+    data.method = req.method;
+    data.body = req.body;
+    data.bodyUsed = req.bodyUsed;
     data.context = context;
     return new Response(JSON.stringify(data), {
       headers: { 'Content-Type': 'application/json' }

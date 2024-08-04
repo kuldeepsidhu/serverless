@@ -1,6 +1,6 @@
-const fetch = require('node-fetch');
-const { v4: uuidv4 } = require('uuid'); // Install uuid library with npm install uuid
-const base64 = require('base-64'); // Install base-64 library with npm install base-64
+import fetch from 'node-fetch';
+import { v4 as uuidv4 } from 'uuid';
+import base64 from 'base-64';
 
 export default async (req, context) => {
   const { name, message } = context.params;

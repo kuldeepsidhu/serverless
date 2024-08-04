@@ -9,8 +9,8 @@ export default async (req, context) => {
     data.context = context;
 
     // Parse the request body
-    const requestBody = JSON.parse(req);
-    data.parsedBody = requestBody;
+    // const requestBody = JSON.parse(req);
+    // data.parsedBody = requestBody;
 
     
     return new Response(JSON.stringify(data), {

@@ -1,19 +1,10 @@
 export default async (req, context) => {
   try {
     // Fetch data from the API
-    const response = await fetch('https://dummyjson.com/todos');
-    
-    // Check if the response is OK (status code 200-299)
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    // Parse the response as JSON
-    const data = await response.json();
-    data.context = context;
-
-    // Return a new Response object with the JSON data
-    return new Response(JSON.stringify(data), {
+    const response = {};
+    response.request = req;
+    response.context = context;
+    return new Response(JSON.stringify(response), {
       headers: { 'Content-Type': 'application/json' }
     });
   } catch (error) {

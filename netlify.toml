@@ -1,6 +1,6 @@
 [[headers]]
 for = "/*"
 [headers.values]
-Access-Control-Allow-Origin = "*"
+Access-Control-Allow-Origin = "https://kuldeepsidhu.github.io"
 Access-Control-Allow-Methods = "POST, OPTIONS"
 Access-Control-Allow-Headers = "Content-Type"

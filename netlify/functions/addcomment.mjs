@@ -7,6 +7,12 @@ export default async (req, context) => {
     data.body = req.body;
     data.bodyUsed = req.bodyUsed;
     data.context = context;
+
+    // Parse the request body
+    const requestBody = JSON.parse(req.body);
+    data.parsedBody = requestBody;
+
+    
     return new Response(JSON.stringify(data), {
       headers: { 'Content-Type': 'application/json' }
     });

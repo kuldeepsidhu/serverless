@@ -1,9 +1,9 @@
 export default async (req, context) => {
-  const { city, country } = context.params;
+  const { name, message } = context.params;
 
-  return new Response(`You're visiting ${city} in ${country}!`);
+  return new Response(`New comment from ${name} in ${message}!`);
 };
 
 export const config = {
-  path: "/travel-guide/:city/:country"
+  path: "/addcomment/:name/:message"
 };

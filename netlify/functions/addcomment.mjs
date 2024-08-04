@@ -8,7 +8,7 @@ export default async (req, context) => {
     return new Response(JSON.stringify({ }), {
       statusCode: 200,
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'https://kuldeepsidhu.github.io',
         'Access-Control-Allow-Headers': 'Content-Type',
         'Access-Control-Allow-Methods': 'POST, OPTIONS, GET',
       }

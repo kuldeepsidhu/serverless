@@ -3,6 +3,19 @@ import { v4 as uuidv4 } from 'uuid';
 import base64 from 'base-64';
 
 export default async (req, context) => {
+
+  if (req.method === "OPTIONS") {
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS, GET',
+      },
+      body: JSON.stringify({ }),
+    };
+  }
+
   const { name, message } = context.params;
   var response = await createFile(context);
 

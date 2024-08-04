@@ -5,21 +5,27 @@ import base64 from 'base-64';
 export default async (req, context) => {
 
   if (req.method === "OPTIONS") {
-    return {
+    return new Response(JSON.stringify({ }), {
       statusCode: 200,
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type',
         'Access-Control-Allow-Methods': 'POST, OPTIONS, GET',
-      },
-      body: JSON.stringify({ }),
-    };
+      }
+    });
   }
 
   const { name, message } = context.params;
   var response = await createFile(context);
 
-  return new Response(response);
+  return new Response(response, {
+    statusCode: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS, GET',
+    }
+  });
 };
 
 async function createFile(context) {

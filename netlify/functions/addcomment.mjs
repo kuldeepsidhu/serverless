@@ -51,6 +51,7 @@ async function createComment(req, context) {
   
   // 4. Create a POST request
   const url = `https://api.github.com/repos/${username}/${repository}/contents/_data/comments/${postUrl}/${uuid}.json`;
+  console.log(url);
   // const token = 'YOUR_GITHUB_TOKEN'; // Replace with your actual GitHub token
   const token = Netlify.env.get("GITHUB_TOKEN");
 

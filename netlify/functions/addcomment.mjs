@@ -28,7 +28,7 @@ export default async (req, context) => {
 };
 
 async function createComment(req, context) {
-  const { name, message } = context.params;
+  const { post } = context.params;
 
   // 1. Create a JSON from name, message, and current date
   const currentDate = new Date().toISOString();
@@ -41,7 +41,7 @@ async function createComment(req, context) {
   };
 
   // 2. Calculate Base64 encoded value for JSON
-  const jsonString = JSON.stringify(jsonObject);
+  const jsonString = JSON.stringify(requestBody);
   const base64Encoded = base64.encode(jsonString);
   const commitMessage = `New comment from ${name}`;
 
@@ -51,7 +51,7 @@ async function createComment(req, context) {
   const repository = Netlify.env.get("REPOSITORY");
   
   // 4. Create a POST request
-  const url = `https://api.github.com/repos/${username}/${repository}/contents/_data/comments/${uuid}.json`;
+  const url = `https://api.github.com/repos/${username}/${repository}/contents/_data/comments/${post}/${uuid}.json`;
   // const token = 'YOUR_GITHUB_TOKEN'; // Replace with your actual GitHub token
   const token = Netlify.env.get("GITHUB_TOKEN");
 
@@ -86,5 +86,5 @@ async function createComment(req, context) {
 
 
 export const config = {
-  path: "/addcomment/:name/:message"
+  path: "/addcomment/:post"
 };

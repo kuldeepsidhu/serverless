@@ -34,16 +34,11 @@ async function createComment(req, context) {
   const currentDate = new Date().toISOString();
   const requestBody = await req.json();
   console.log(requestBody);
-  const jsonObject = {
-    name: name,
-    message: message,
-    date: currentDate
-  };
 
   // 2. Calculate Base64 encoded value for JSON
   const jsonString = JSON.stringify(requestBody);
   const base64Encoded = base64.encode(jsonString);
-  const commitMessage = `New comment from ${name}`;
+  const commitMessage = `New comment from ${requestBody.name}`;
 
   // 3. Create a random UUID
   const uuid = uuidv4();

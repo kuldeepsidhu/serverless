@@ -33,7 +33,8 @@ async function createComment(req, context) {
   // 1. Create a JSON from name, message, and current date
   const currentDate = new Date().toISOString();
   const reqBody = await req.json();
-  const requestBody = JSON.parse(reqBody);
+  console.log(reqBody);
+  const requestBody = JSON.parse(JSON.stringify(reqBody));
   const postUrl = requestBody.postUrl;
   console.log(requestBody);
   console.log(postUrl);

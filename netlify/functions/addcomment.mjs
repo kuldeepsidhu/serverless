@@ -5,7 +5,7 @@ import base64 from 'base-64';
 export default async (req, context) => {
 
   if (req.method === "OPTIONS") {
-    return new Response(JSON.stringify({ }), {
+    return new Response(JSON.stringify({}), {
       statusCode: 200,
       headers: {
         'Access-Control-Allow-Origin': 'https://kuldeepsidhu.github.io',
@@ -15,8 +15,7 @@ export default async (req, context) => {
     });
   }
 
-  const { name, message } = context.params;
-  var response = await createFile(context);
+  var response = await createComment(req, context);
 
   return new Response(response, {
     statusCode: 200,
@@ -28,11 +27,14 @@ export default async (req, context) => {
   });
 };
 
-async function createFile(context) {
-  const { name, message } = context.params;
+async function createComment(req, context) {
+  const { postSlug } = context.params;
 
   // 1. Create a JSON from name, message, and current date
   const currentDate = new Date().toISOString();
+  const requestBody = await req.json();
+  console.log(requestBody);
+
   const jsonObject = {
     name: name,
     message: message,
@@ -40,7 +42,7 @@ async function createFile(context) {
   };
 
   // 2. Calculate Base64 encoded value for JSON
-  const jsonString = JSON.stringify(jsonObject);
+  const jsonString = JSON.stringify(requestBody);
   const base64Encoded = base64.encode(jsonString);
   const commitMessage = `New comment from ${name}`;
 
@@ -48,9 +50,9 @@ async function createFile(context) {
   const uuid = uuidv4();
   const username = Netlify.env.get("USERNAME");
   const repository = Netlify.env.get("REPOSITORY");
-  
+
   // 4. Create a POST request
-  const url = `https://api.github.com/repos/${username}/${repository}/contents/_data/comments/${uuid}.json`;
+  const url = `https://api.github.com/repos/${username}/${repository}/contents/_data/comments/${postSlug}/${uuid}.json`;
   // const token = 'YOUR_GITHUB_TOKEN'; // Replace with your actual GitHub token
   const token = Netlify.env.get("GITHUB_TOKEN");
 
@@ -68,9 +70,12 @@ async function createFile(context) {
     })
   });
 
+  console.log(response);
   // Check the response
   if (response.ok) {
-    var apiresponse = 'Comment added successfully!'
+    var apiresponse = {};
+    apiresponse.status = '200';
+    apiresponse.message = 'Comment added successfully!'
     console.log(apiresponse);
     const responseData = await response.json();
     return apiresponse;
@@ -79,11 +84,14 @@ async function createFile(context) {
     console.error('Error creating file:', response.status, response.statusText);
     const errorData = await response.json();
     console.error(errorData);
-    return "Error adding comment";
+    var apiresponse = {};
+    apiresponse.status = response.status;
+    apiresponse.message = response.statusText;
+    return apiresponse;
   }
 }
 
 
 export const config = {
-  path: "/addcomment/:name/:message"
+  path: "/addcomment/:postSlug/"
 };

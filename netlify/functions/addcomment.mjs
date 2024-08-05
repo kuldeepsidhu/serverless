@@ -37,6 +37,7 @@ async function createComment(req, context) {
   const requestBody = JSON.parse(JSON.stringify(reqBody));
   const postUrl = requestBody.postUrl;
   console.log(requestBody);
+  postUrl = posturl.substr(0, posturl.length-1).replace('/public-blog/','');
   console.log(postUrl);
 
   // 2. Calculate Base64 encoded value for JSON

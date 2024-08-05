@@ -33,6 +33,7 @@ async function createComment(req, context) {
   // 1. Create a JSON from name, message, and current date
   const currentDate = new Date().toISOString();
   const requestBody = await req.json();
+  const postUrl = requestBody.postUrl;
   console.log(requestBody);
 
   // 2. Calculate Base64 encoded value for JSON
@@ -46,7 +47,7 @@ async function createComment(req, context) {
   const repository = Netlify.env.get("REPOSITORY");
   
   // 4. Create a POST request
-  const url = `https://api.github.com/repos/${username}/${repository}/contents/_data/comments/${post}/${uuid}.json`;
+  const url = `https://api.github.com/repos/${username}/${repository}/contents/_data/comments/${postUrl}/${uuid}.json`;
   // const token = 'YOUR_GITHUB_TOKEN'; // Replace with your actual GitHub token
   const token = Netlify.env.get("GITHUB_TOKEN");
 

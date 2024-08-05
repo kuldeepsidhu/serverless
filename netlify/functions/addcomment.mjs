@@ -5,7 +5,7 @@ import base64 from 'base-64';
 export default async (req, context) => {
 
   if (req.method === "OPTIONS") {
-    return new Response(JSON.stringify({}), {
+    return new Response(JSON.stringify({ }), {
       statusCode: 200,
       headers: {
         'Access-Control-Allow-Origin': 'https://kuldeepsidhu.github.io',
@@ -28,13 +28,12 @@ export default async (req, context) => {
 };
 
 async function createComment(req, context) {
-  const { postSlug } = context.params;
+  const { name, message } = context.params;
 
   // 1. Create a JSON from name, message, and current date
   const currentDate = new Date().toISOString();
   const requestBody = await req.json();
   console.log(requestBody);
-
   const jsonObject = {
     name: name,
     message: message,
@@ -42,7 +41,7 @@ async function createComment(req, context) {
   };
 
   // 2. Calculate Base64 encoded value for JSON
-  const jsonString = JSON.stringify(requestBody);
+  const jsonString = JSON.stringify(jsonObject);
   const base64Encoded = base64.encode(jsonString);
   const commitMessage = `New comment from ${name}`;
 
@@ -50,9 +49,9 @@ async function createComment(req, context) {
   const uuid = uuidv4();
   const username = Netlify.env.get("USERNAME");
   const repository = Netlify.env.get("REPOSITORY");
-
+  
   // 4. Create a POST request
-  const url = `https://api.github.com/repos/${username}/${repository}/contents/_data/comments/${postSlug}/${uuid}.json`;
+  const url = `https://api.github.com/repos/${username}/${repository}/contents/_data/comments/${uuid}.json`;
   // const token = 'YOUR_GITHUB_TOKEN'; // Replace with your actual GitHub token
   const token = Netlify.env.get("GITHUB_TOKEN");
 
@@ -70,12 +69,9 @@ async function createComment(req, context) {
     })
   });
 
-  console.log(response);
   // Check the response
   if (response.ok) {
-    var apiresponse = {};
-    apiresponse.status = '200';
-    apiresponse.message = 'Comment added successfully!'
+    var apiresponse = 'Comment added successfully!'
     console.log(apiresponse);
     const responseData = await response.json();
     return apiresponse;
@@ -84,14 +80,11 @@ async function createComment(req, context) {
     console.error('Error creating file:', response.status, response.statusText);
     const errorData = await response.json();
     console.error(errorData);
-    var apiresponse = {};
-    apiresponse.status = response.status;
-    apiresponse.message = response.statusText;
-    return apiresponse;
+    return "Error adding comment";
   }
 }
 
 
 export const config = {
-  path: "/addcomment/:postSlug/"
+  path: "/addcomment/:name/:message"
 };
